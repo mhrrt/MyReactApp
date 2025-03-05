@@ -104,14 +104,6 @@ export default function HomeScreen() {
               </TouchableOpacity>
             );
           })}
-          {/* Google AdMob Banner */}
-          {/* <BannerAd
-            unitId={adUnitId}
-            size={BannerAdSize.BANNER}
-            requestOptions={{
-              requestNonPersonalizedAdsOnly: true, // GDPR compliance
-            }}
-          /> */}
         </View>
       ))}
       <Modal

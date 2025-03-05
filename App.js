@@ -1,6 +1,8 @@
 // App.js
-import React, { useState } from 'react';
-import { Text } from 'react-native';
+// AdMob 5MAr
+import React, { useState, useEffect } from 'react';
+
+import { Text, SafeAreaView, StyleSheet } from 'react-native';
 // import { initializeApp } from '@react-native-firebase/app';
 // import { MobileAds } from 'react-native-google-mobile-ads';
 // Adding navigation
@@ -10,6 +12,9 @@ import HomeScreen from "./HomeScreen";
 import HelpScreen from  "./HelpScreen";
 import InfoCard from  "./InfoCard"
 import Icon from "react-native-vector-icons/Ionicons"; // You can use MaterialIcons or FontAwesome too
+
+// AdMob 5MAR
+import { GAMBannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 
 // Initialize Firebase & AdMob
 // initializeApp();
@@ -26,8 +31,8 @@ const getMessageForCell = (index) => {
 
 export default function App() {
   return (
+    <SafeAreaView style={styles.container}>
     <NavigationContainer>
-       
       <Stack.Navigator>
         <Stack.Screen 
           name="Home" 
@@ -50,7 +55,16 @@ export default function App() {
         {/* Help Screen */}
         <Stack.Screen name="Help" component={HelpScreen} options={{ title: "Help" }} />
       </Stack.Navigator>
+       {/* Google AdMob Banner */}
+        <GAMBannerAd
+            unitId={TestIds.BANNER}
+            sizes={[BannerAdSize.FULL_BANNER]}
+            requestOptions={{
+              requestNonPersonalizedAdsOnly: true,
+            }}
+        />
     </NavigationContainer>
+    </SafeAreaView>
   );
 }
 
@@ -66,3 +80,23 @@ export default function App() {
 //     textAlign: 'center',
 //   }
 // });
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#FFF5E1',
+  },
+  screenContent: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  adBanner1: {
+    alignSelf: 'center',
+    marginTop: 0, // Adjust spacing if needed
+  },
+  adBanner2: {
+    alignSelf: 'center',
+    marginTop: 0, // Adjust spacing if needed
+  },
+});
