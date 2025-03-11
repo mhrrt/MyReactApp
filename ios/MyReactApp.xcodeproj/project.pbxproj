@@ -112,7 +112,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
 				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
-				1E21D66AC3D0F8D1FAA8686D /* [CP-User] [RNGoogleMobileAds] Configuration */,
+				3949DFDBA3BEF7558C7FEB4C /* [CP-User] [RNGoogleMobileAds] Configuration */,
 			);
 			buildRules = (
 			);
@@ -201,7 +201,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MyReactApp/Pods-MyReactApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		1E21D66AC3D0F8D1FAA8686D /* [CP-User] [RNGoogleMobileAds] Configuration */ = {
+		3949DFDBA3BEF7558C7FEB4C /* [CP-User] [RNGoogleMobileAds] Configuration */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -276,6 +276,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = MyReactApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "श्री Ram Salaka";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -303,6 +304,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = MyReactApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "श्री Ram Salaka";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

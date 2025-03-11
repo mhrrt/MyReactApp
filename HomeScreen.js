@@ -112,7 +112,9 @@ export default function HomeScreen() {
         animationType="fade"
         onRequestClose={() => setModalVisible(false)}
       >
-       <Pressable style={styles.pressableOverlay} onPress={() => setModalVisible(false)}>
+       <Pressable style={styles.pressableOverlay} 
+      //  onPress={() => setModalVisible(false)}
+       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             {/* <Text style={styles.modalText}>Cell: {selectedCell}</Text> */}
@@ -122,7 +124,9 @@ export default function HomeScreen() {
       
             {showChopaiAtIndex !== null && <RamPrashnavaliAnswer chopaiIndex={showChopaiAtIndex} />}
 
-            <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
+            <TouchableOpacity 
+            onPress={() => setModalVisible(false)} 
+            style={styles.closeButton}>
               <Text style={styles.closeButtonText}>Close</Text>
             </TouchableOpacity>
 
