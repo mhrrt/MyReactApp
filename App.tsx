@@ -4,16 +4,26 @@
  *
  * @format
  */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Icon from "react-native-vector-icons/Ionicons";
 import HomeScreen from "./HomeScreen"; // Move existing UI to HomeScreen.tsx
 import HelpScreen from "./HelpScreen"; // Import Help Screen
+import { initialize } from 'react-native-google-mobile-ads'; // 20Mar
+
 
 const Stack = createStackNavigator();
 
 const App = (): React.JSX.Element => {
+
+  //20MAR
+  useEffect(() => {
+    initialize()
+      .then(() => console.log('Google Mobile Ads Initialized'))
+      .catch((error: any) => console.log('Google Mobile Ads Init Failed:', error));
+  }, []);
+
   return (
     <NavigationContainer>
       <Stack.Navigator>

@@ -25,19 +25,21 @@ import { Platform } from 'react-native';
 // MobileAds().initialize();
 // AppRegistry.registerComponent(appName, () => App);
 
+const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-5854957597162003/5424363862';
+
 // 11MAR
 let GAMBannerAd, BannerAdSize, TestIds;
 
 // 11MAR
-if (Platform.OS === 'ios') {
+if (Platform.OS === 'ios' || Platform.OS === 'android') {
   const AdModule = require('react-native-google-mobile-ads'); // Import the entire module first
   GAMBannerAd = AdModule.GAMBannerAd;
   BannerAdSize = AdModule.BannerAdSize;
-  TestIds = AdModule.TestIds;
+  TestIds = __DEV__ ? AdModule.TestIds : 'ca-app-pub-5854957597162003/5424363862';
 }
 
 const loadAdModule = async () => {
-  if (Platform.OS === 'ios') {
+  if (Platform.OS === 'ios' || Platform.OS === 'android') {
     const { GAMBannerAd, BannerAdSize, TestIds } = await import('react-native-google-mobile-ads');
     return { GAMBannerAd, BannerAdSize, TestIds };
   }
@@ -56,14 +58,17 @@ const getMessageForCell = (index) => {
 // Custom Wrapper to include a static view inside Stack.Navigator
 const CustomScreenWrapper = ({ children }) => {
   
-  if (Platform.OS === 'ios') {
+  if (Platform.OS === 'ios' || Platform.OS === 'android') {
     return (
       <View style={styles.container}>
         {/* Fixed View Below Navigation Bar */}
         <View style={styles.fixedView}>
         <GAMBannerAd
-              unitId={TestIds.BANNER}
+              unitId={adUnitId}
               sizes={[BannerAdSize.FULL_BANNER]}
+              onAdFailedToLoad={(error) => {
+                console.log(`Ad Failed to Load [Code: ${error.code}] - ${error.message}`);
+              }}
               requestOptions={{
                 requestNonPersonalizedAdsOnly: true,
               }}
@@ -83,11 +88,13 @@ const CustomScreenWrapper = ({ children }) => {
 };
 
 const BannerForiOS = () => {
-  if (Platform.OS === 'ios') {
+  if (Platform.OS === 'ios' || Platform.OS === 'android') {
+
     return (
       <GAMBannerAd
-            unitId={TestIds.BANNER}
+            unitId= {adUnitId}
             sizes={[BannerAdSize.FULL_BANNER]}
+            onAdFailedToLoad={(error) => console.log('Ad Failed to Load:', error.code, error.message)}
             requestOptions={{
               requestNonPersonalizedAdsOnly: true,
             }}

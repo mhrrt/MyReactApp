@@ -10,12 +10,14 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        // maven { url 'https://artifacts.applovin.com/android' } // Apollvin max 12mar
     }
     dependencies {
         classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
         // classpath("com.google.android.gms:play-services-ads:22.6.0") // Ensure this is updated 10Mar
+        // classpath "com.applovin.quality:AppLovinQualityServiceGradlePlugin:+" // Apollvin max 12mar
     }
 }
 
