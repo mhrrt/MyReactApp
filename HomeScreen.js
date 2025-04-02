@@ -181,6 +181,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: theme.colors.primary,
     alignItems: 'center',
+    flex: 1
   },
   modalText: {
     fontSize: theme.fontSize.large,

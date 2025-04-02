@@ -7,12 +7,14 @@ export default StyleSheet.create({
     borderRadius: 10,
     elevation: 5,
     margin: 10,
-    height: Dimensions.get('window').height * 0.8
+    height: Dimensions.get('window').height * 0.8,
+    flex: 1,
+    overflow: 'hidden' // Prevents content from spilling out
   },
   scrollContent: {
     flexGrow: 1,
     justifyContent: 'center',
-    paddingBottom: 20, // Space for close button
+    paddingBottom: 20, // Space for close button,
   },
   header: {
     marginBottom: 10,

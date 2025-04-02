@@ -120,14 +120,20 @@ export default function RamPrashnavaliAnswer({ chopaiIndex }) {
   const selectedChopai = chopaiList[chopaiIndex];
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <ScrollView contentContainerStyle={styles.scrollContent} 
+        nestedScrollEnabled={true} scrollEnabled={true} 
+        showsVerticalScrollIndicator={true} 
+        keyboardShouldPersistTaps="handled"
+        onScroll={(event) => console.log('Scrolling...', event.nativeEvent.contentOffset.y)}
+        scrollEventThrottle={16}
+        >
       {/* Header */}
-      <View style={styles.header}>
+      <View style={styles.header} onStartShouldSetResponder={() => true}>
         <Text style={styles.title}>{selectedChopai.title}</Text>
       </View>
 
       {/* Entry Content */}
-      <View style={styles.entryContent}>
+      <View style={styles.entryContent} onStartShouldSetResponder={() => true}>
         <Text style={styles.highlight}>{selectedChopai.resultHindi}</Text>
 
         <Text style={styles.chaupai}>{selectedChopai.chopaiHindi}</Text>

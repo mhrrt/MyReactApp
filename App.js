@@ -25,7 +25,6 @@ import { Platform } from 'react-native';
 // MobileAds().initialize();
 // AppRegistry.registerComponent(appName, () => App);
 
-const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-5854957597162003/5424363862';
 
 // 11MAR
 let GAMBannerAd, BannerAdSize, TestIds;
@@ -59,6 +58,7 @@ const getMessageForCell = (index) => {
 const CustomScreenWrapper = ({ children }) => {
   
   if (Platform.OS === 'ios' || Platform.OS === 'android') {
+    const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-5854957597162003/5424363862';
     return (
       <View style={styles.container}>
         {/* Fixed View Below Navigation Bar */}
@@ -89,7 +89,7 @@ const CustomScreenWrapper = ({ children }) => {
 
 const BannerForiOS = () => {
   if (Platform.OS === 'ios' || Platform.OS === 'android') {
-
+    const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-5854957597162003/5424363862';
     return (
       <GAMBannerAd
             unitId= {adUnitId}
@@ -114,7 +114,7 @@ export default function App() {
           name="Home" 
           // component={HomeScreen} 
           options={({navigation}) => ({
-            title: "Ram Salaka MTCorp®",
+            title: "Ram Salaka TInfoCorp®",
             headerTitleStyle: {
               color: '#FF9933'
             },
