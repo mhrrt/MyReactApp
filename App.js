@@ -46,7 +46,7 @@ const loadAdModule = async () => {
 };
 
 const Stack = createStackNavigator();
-const titleText = 'राम शलाका प्रश्नावली गोस्वामी तुलसीदास क्रुत MTCorp®';
+const titleText = 'राम शलाका प्रश्नावली गोस्वामी तुलसीदास क्रुत TInfoCorp';
 
 const getMessageForCell = (index) => {
   const messageIndex = index % randomMessages.length;
@@ -67,7 +67,7 @@ const CustomScreenWrapper = ({ children }) => {
               unitId={adUnitId}
               sizes={[BannerAdSize.FULL_BANNER]}
               onAdFailedToLoad={(error) => {
-                console.log(`Ad Failed to Load [Code: ${error.code}] - ${error.message}`);
+                console.log(`Ad Failed to Load at bottom [Code: ${error.code}] - ${error.message} addunitId is:`, adUnitId);
               }}
               requestOptions={{
                 requestNonPersonalizedAdsOnly: true,
@@ -94,7 +94,7 @@ const BannerForiOS = () => {
       <GAMBannerAd
             unitId= {adUnitId}
             sizes={[BannerAdSize.FULL_BANNER]}
-            onAdFailedToLoad={(error) => console.log('Ad Failed to Load:', error.code, error.message)}
+            onAdFailedToLoad={(error) => console.log('Ad Failed to Load:', error.code, error.message, adUnitId)}
             requestOptions={{
               requestNonPersonalizedAdsOnly: true,
             }}
@@ -114,7 +114,7 @@ export default function App() {
           name="Home" 
           // component={HomeScreen} 
           options={({navigation}) => ({
-            title: "Ram Salaka TInfoCorp®",
+            title: "Ram Shalaka TInfoCorp®",
             headerTitleStyle: {
               color: '#FF9933'
             },

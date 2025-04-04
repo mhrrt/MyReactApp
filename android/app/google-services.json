@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "16713712406",
+    "project_id": "ramsalaka-329ee",
+    "storage_bucket": "ramsalaka-329ee.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:16713712406:android:29afd9d8b625716e5c0637",
+        "android_client_info": {
+          "package_name": "com.ramshalaka"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQ0EFuJm48glzp8ij_s0qWRbbj7e_7nbQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -6,9 +6,9 @@ const HelpScreen = () => {
     return (
         <ScrollView style={styles.container}>
           {/* English Section */}
-          <Text style={styles.title}>🔹 How to Use Ram Salaka</Text>
+          <Text style={styles.title}>🔹 How to Use Ram Shalaka</Text>
           {renderBulletPoint("Focus on Your Question", "Think about your question with a clear mind and devotion.")}
-          {renderBulletPoint("Tap to Select a Random Grid", "Tap anywhere on the Ram Salaka grid to get a random selection.")}
+          {renderBulletPoint("Tap to Select a Random Grid", "Tap anywhere on the Ram Shalaka grid to get a random selection.")}
           {renderBulletPoint("Read the Verse (Chaupai)", "The selected chaupai (verse) from Ramcharitmanas will be displayed.")}
           {renderBulletPoint("Interpret the Answer", "The verse provides guidance based on your query. You can seek help from a learned person for a deeper meaning.")}
     

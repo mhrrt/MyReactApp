@@ -15,7 +15,7 @@ import RamPrashnavaliAnswer from './RamPrashnavaliAnswer';
 const { width } = Dimensions.get('window');
 const cellSize = Math.floor(width / 15) - 2;
 
-const titleText = 'राम शलाका प्रश्नावली गोस्वामी तुलसीदास क्रुत MTCorp®';
+const titleText = 'राम शलाका प्रश्नावली गोस्वामी तुलसीदास क्रुत TInfoCorp®';
 const descText ='#1 राम शलाका प्रश्नावली श्रीरामचरितमानस पर आधारित एक भविष्यफल जानने की विधि है।';
 
 const tableSize = 15; // 15x15 table
