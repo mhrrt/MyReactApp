@@ -88,7 +88,7 @@ android {
     }
     namespace "com.tinfocorp.ramshalaka"
     defaultConfig {
-        applicationId "com.ramshalaka"
+        applicationId "com.tinfocorp.ramshalaka"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

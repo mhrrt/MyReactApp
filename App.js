@@ -63,7 +63,7 @@ const CustomScreenWrapper = ({ children }) => {
       <View style={styles.container}>
         {/* Fixed View Below Navigation Bar */}
         <View style={styles.fixedView}>
-        <GAMBannerAd
+        {/* <GAMBannerAd
               unitId={adUnitId}
               sizes={[BannerAdSize.FULL_BANNER]}
               onAdFailedToLoad={(error) => {
@@ -72,7 +72,7 @@ const CustomScreenWrapper = ({ children }) => {
               requestOptions={{
                 requestNonPersonalizedAdsOnly: true,
               }}
-          />
+          /> */}
         </View>
   
         {/* Screen Content */}
