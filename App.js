@@ -10,6 +10,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import HomeScreen from "./HomeScreen";
 import HelpScreen from  "./HelpScreen";
+// For adding pnachang
+//import PanchangCard from './PanchangCard';
+
 import InfoCard from  "./InfoCard"
 // import Icon from "react-native-vector-icons/Ionicons"; // You can use MaterialIcons or FontAwesome too
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -18,6 +21,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 // import { GAMBannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 // 11MAr Admob platform specific
 import { Platform } from 'react-native';
+
+
 
 
 // Initialize Firebase & AdMob
@@ -62,19 +67,7 @@ const CustomScreenWrapper = ({ children }) => {
     return (
       <View style={styles.container}>
         {/* Fixed View Below Navigation Bar */}
-        <View style={styles.fixedView}>
-        {/* <GAMBannerAd
-              unitId={adUnitId}
-              sizes={[BannerAdSize.FULL_BANNER]}
-              onAdFailedToLoad={(error) => {
-                console.log(`Ad Failed to Load at bottom [Code: ${error.code}] - ${error.message} addunitId is:`, adUnitId);
-              }}
-              requestOptions={{
-                requestNonPersonalizedAdsOnly: true,
-              }}
-          /> */}
-        </View>
-  
+        
         {/* Screen Content */}
         <View style={styles.container}>{children}</View>
       </View>
@@ -176,4 +169,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  // panchangView: {
+  //   height: 200, // Fixed height
+  //   padding: 12,
+  //   backgroundColor: '#FFF5E1',
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  // },
 });

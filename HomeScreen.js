@@ -6,7 +6,7 @@ import { theme } from './theme';
 // import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 
 import RamPrashnavaliAnswer from './RamPrashnavaliAnswer';
-
+import PanchangCard from './PanchangCard';
 
 // const tableData = Array.from({ length: 15 }, (_, row) =>
 //   Array.from({ length: 15 }, (_, col) => `${row + 1},${col + 1}`)
@@ -90,6 +90,9 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
+      <View style={styles.panchangView}>
+          <PanchangCard />
+        </View>
       {tableData.map((row, rowIndex) => (
         <View key={rowIndex} style={styles.row}>
           {row.map((cell, colIndex) => {
@@ -204,5 +207,12 @@ const styles = StyleSheet.create({
   closeButtonText: {
     color: theme.colors.text,
     fontWeight: 'bold',
+  },
+  panchangView: {
+    height: 170, // Fixed height
+    padding: 12,
+    backgroundColor: '#FFF5E1',
+    justifyContent: 'center',
+    //alignItems: 'center',
   }
 });

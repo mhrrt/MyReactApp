@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>श्री Ram Salaka</string>
+	<string>श्री Ram Shalaka</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -49,5 +49,9 @@
 	<false/>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-5854957597162003~7723224149</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need your location to fetch Panchang data based on your device local.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This app needs location access even in background.</string>
 </dict>
 </plist>
