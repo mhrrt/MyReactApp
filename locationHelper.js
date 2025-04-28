@@ -45,41 +45,13 @@ export const requestLocationPermission = async () => {
   }
 };
 
-// export const getCurrentLocation = async (onSuccess, onError) => {
-//   const hasPermission = await requestLocationPermission();
-
-//   if (!hasPermission) {
-//     console.warn('Location permission not granted');
-//     onError && onError({ message: 'Permission denied' });
-//     return;
-//   }
-
-//   Geolocation.getCurrentPosition(
-//     position => {
-//       console.log('Location:', position.coords.latitude, position.coords.longitude);
-//       onSuccess && onSuccess(position.coords.latitude, position.coords.longitude);
-//     },
-//     error => {
-//       console.error('Location Error:', error);
-//       onError && onError(error);
-//     },
-//     {
-//       enableHighAccuracy: true,
-//       timeout: 15000,
-//       maximumAge: 10000,
-//       distanceFilter: 0,
-//     }
-//   );
-// };
-
 export const getCurrentLocation = () => {
   return new Promise((resolve, reject) => {
     Geolocation.getCurrentPosition(
       position => {
-        const { coords } = position.coords;
-        console.log('Location inside service:', coords);
-        console.log('Location inside service:', coords, coords);
-        resolve({ coords });
+        const { latitude, longitude } = position.coords;
+        console.log('Location inside service:', latitude, longitude);
+        resolve({ latitude, longitude }); // Return latitude and longitude directly
       },
       error => {
         console.error('Location Error:', error);

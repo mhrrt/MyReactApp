@@ -1,107 +1,177 @@
-// PanchangCard.js
-import React, { useEffect, useState } from 'react';
+// panchangCard.js
+
+import React, { useState, useEffect } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, Alert } from 'react-native';
 import { getCurrentLocation } from './locationHelper';
- //import { fetchPanchang } from './services/panchangService';
-import fetchPanchang from './services/panchangService';
-import { theme } from './theme';
 
-const PanchangCard = () => {
+import { fetchPanchang } from './services/panchangServicePro';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'; // Use icons as needed
+
+const getCurrentDateTimeISO8601 = () => {
+  const today = new Date();
+
+  // Get the ISO string (this will be in UTC)
+  let isoString = today.toISOString();
+
+  // Adjust the time zone for local offset if needed
+  const timezoneOffset = today.getTimezoneOffset(); // in minutes
+  const hoursOffset = Math.floor(Math.abs(timezoneOffset) / 60);
+  const minutesOffset = Math.abs(timezoneOffset) % 60;
+
+  // Adjust the time to local time by adding the timezone offset
+  const offsetSign = timezoneOffset > 0 ? '-' : '+';
+  const timezoneString = `${offsetSign}${String(hoursOffset).padStart(2, '0')}:${String(minutesOffset).padStart(2, '0')}`;
+  console.log('iso time before removal of Z is', isoString);
+
+  // Replace the 'Z' with the local time offset
+  isoString = isoString.replace('Z', timezoneString);
+
+  console.log('final datestring is', isoString);
+  return isoString;
+};
+
+function extractTime(isoString) {
+  const date = new Date(isoString);
+  const hours = String(date.getUTCHours()).padStart(2, '0');
+  const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+  const seconds = String(date.getUTCSeconds()).padStart(2, '0');
+  //return `${hours}:${minutes}:${seconds}`;
+  return date.toLocaleTimeString();
+};
+
+const panchangCard = () => {
     const [panchang, setPanchang] = useState(null);
     const [loading, setLoading] = useState(true);
 
   const today = new Date();
+  //let dateDDMMYYYY = today.getDate() + "-"+ String(today.getMonth() + 1).padStart(2, '0') +"-"+today.getFullYear();
+  // ISO 8601 (YYYY-MM-DDTHH:MM:SSZ) format.  Example: 2004-02-12T15:19:21+05:30. 
+  const now = new Date();
+  const isoString = now.toISOString();
+  console.log(isoString);
 
-  //useEffect(() => {
-    const getPanchangData = async () => {
-      try {
-       // Alert.alert('calling getCurrentLocation in Your code:');
-        const location = await getCurrentLocation();
-       // Alert.alert(' getCurrentLocation get called:');
-        //Alert.alert('location returned:', location); // ADD THIS LINE
-        const { latitude, longitude } = location;
-        console.log('lat, long from device are #1: ', latitude, longitude);
-        console.log('getLocation:', getCurrentLocation);
-        console.log('lat, long from device are:#2: ', latitude, longitude);
-        // const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-        // const panchang = await fetchPanchangData({ date: today, latitude, longitude });
-        const apiResponse = await fetchPanchang({
-            year: today.getFullYear(),
-            month: today.getMonth() + 1,
-            date: today.getDate(),
-            hour: today.getHours(),
-            minute: today.getMinutes(),
-            seconds:0,
-            latitude: 20.1,
-            longitude:-70.21,
-            tzone: -today.getTimezoneOffset() / 60,
-        });
-        //console.log('post request is successfull', JSON.stringify(apiResponse, null, 2))
-        //Alert.alert('Data value is', JSON.stringify(apiResponse));
-        console.log('Full api response', JSON.stringify(apiResponse));
+  // Build the final ISO 8601 string with the time zone
+  const dateStringWithTimezone = isoString; //getCurrentDateTimeISO8601();
+  console.log(dateStringWithTimezone);
 
-        // setPanchang(apiResponse);
-        //parse output 
-        try {
-          // STEP 1: First parse the full response (if it's a string)
-          const topLevel = typeof apiResponse === 'string' 
-          ? JSON.parse(apiResponse) 
-          : apiResponse;
-          // extract string from response.output object as respons string do have 'output' key
-          const outputString = topLevel?.data?.output;
+  const Card = ({ title, value, icon }) => (
+    <View style={styles.card}>
+      <Text style={styles.cardTitle}>{title}</Text>
+      <View style={styles.iconContainer}>
+        <MaterialCommunityIcons name={icon} size={28} color="#712D0F" />
+      </View>
+      <Text style={styles.cardValue}>{value}</Text>
+    </View>
+  );
 
-          const parsedOutput = outputString ? JSON.parse(outputString) : null;
-          
-          if (parsedOutput) {
-            console.log('✅ Panchang parsed successfully:', parsedOutput);
-            setPanchang(parsedOutput);
-          } else {
-            console.warn('⚠️ Output was empty or invalid');
-            Alert.alert('Error Output was empty or invalid', 'Could not parse Panchang data');
-          }
-        } catch (e) {
-          console.error('❌ Failed to parse output:', e);
-        }
-      } catch (err) {
-        console.error('Failed to load Panchang', err);
-        Alert.alert('Error', 'Something went wrong while fetching Panchang');
-      } finally {
-        setLoading(false);
+  const getPanchangData = async () => {
+    try {
+      const { latitude, longitude } = await getCurrentLocation();
+      console.log('Device Location:', latitude, longitude);
+      console.log('Date format passed to API function:', dateStringWithTimezone);
+
+      const apiResponse = await fetchPanchang(
+       dateStringWithTimezone,
+       latitude,
+       longitude,
+      );
+      console.log('Full API Response:', JSON.stringify(apiResponse));
+
+      const parsedResponse = typeof apiResponse === 'string'
+        ? JSON.parse(apiResponse)
+        : apiResponse;
+
+      if (parsedResponse) {
+        console.log('✅ Panchang parsed successfully:', parsedResponse.data);
+        setPanchang(parsedResponse.data);
+      } else {
+        console.warn('⚠️ Output was empty or invalid');
+        Alert.alert('Error', 'Output was empty or invalid');
       }
-    };
+    } catch (err) {
+      console.error('❌ Failed to load Panchang:', err);
+      Alert.alert('Error', 'Something went wrong while fetching Panchang');
+    } finally {
+      setLoading(false);
+    }
+  };
     useEffect(() => {
         getPanchangData();
     }, []); 
 
-//   if (loading) return <ActivityIndicator />;
+
 if (loading) return <ActivityIndicator size="large" style={{ marginTop: 50 }} />;
 
-  if (!panchang) return <Text>Error loading Panchang</Text>;
+if (!panchang) return <Text>Error loading Panchang</Text>;
+
+const todaysTithi =  panchang.tithi[0]?.name ? `${panchang.tithi[0].name} \n ${extractTime(panchang.tithi[0].start)}  ${extractTime(panchang.tithi[0].end)}` : '-';
+const nxtdaysTithi =  panchang.tithi[1]?.name ? `${panchang.tithi[1].name} \n ${extractTime(panchang.tithi[1].start)}  ${extractTime(panchang.tithi[1].end)}` : '-';
 
   return (
-    <View style={styles.card}>
-      <Text style={styles.title}>📅 Panchang for Today</Text>
-      <Text style={styles.item}>🌗 Tithi: {panchang?.name}</Text>
-      <Text style={styles.item}>🌓 Paksha: {panchang?.paksha}</Text>
-      <Text style={styles.item}>⏳ Ends at: {panchang?.completes_at}</Text>
-      <Text style={styles.item}>🔄 Left: {panchang?.left_precentage}%</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Todays Panchang</Text>
+
+      <View style={styles.row}>
+        <Card title="Tithi" value={todaysTithi} icon="flare" />
+        <Card title="Nakshatra" value={`${panchang.nakshatra[0]?.name}`} icon="star-david" />
+        <Card title="Sunrise" value={`${extractTime(panchang?.sunrise)} ${extractTime(panchang?.sunset)}`} icon="white-balance-sunny" />
+        {/* <Card title="Sunrise" value={`${extractTime(panchang?.moonrise)} - ${extractTime(panchang?.moonset)}`} icon="moon-waning-crescent" /> */}
+      </View>
+
+      <Text style={styles.title}>Next Day Panchang</Text>
+
+      <View style={styles.row}>
+        <Card title="Tithi" value={nxtdaysTithi} icon="flare" />
+        <Card title="Nakshatra" value={`${panchang.nakshatra[1]?.name}`} icon="star-david" />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  card: {
-    padding: 16,
-    borderRadius: 10,
-    backgroundColor: theme.colors.backgroundColor,
-    elevation: 9,
-    margin: 16,
-  },
-  title: {
-    fontSize: 18,
-    marginBottom: 10,
-    fontWeight: 'bold',
-  },
-});
+    container: {
+      padding: 10,
+      borderRadius: 12,
+      backgroundColor: '#FCEECF',
+      borderColor: '#D6A665',
+      borderWidth: 1,
+      margin: 5,
+    },
+    title: {
+      textAlign: 'center',
+      fontSize: 11,
+      marginBottom: 8,
+      fontWeight: 'bold',
+      color: '#713F12',
+    },
+    row: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      marginBottom: 10,
+    },
+    card: {
+      backgroundColor: '#FAE8C8',
+      padding: 5,
+      borderRadius: 10,
+      width: '32%',
+      alignItems: 'center',
+      borderWidth: 1,
+      borderColor: '#E3C190',
+    },
+    cardTitle: {
+      fontWeight: '500',
+      color: '#713F12',
+    },
+    iconContainer: {
+      marginVertical: 2,
+      height: 25,
+    },
+    cardValue: {
+      fontSize: 10,
+      fontWeight: '500',
+      color: '#712D0F',
+      textAlign: 'center',
+    },
+  });
 
-export default PanchangCard;
+export default panchangCard;

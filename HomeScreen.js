@@ -6,7 +6,7 @@ import { theme } from './theme';
 // import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 
 import RamPrashnavaliAnswer from './RamPrashnavaliAnswer';
-import PanchangCard from './PanchangCard';
+import PanchangCard from './panchangCard';
 
 // const tableData = Array.from({ length: 15 }, (_, row) =>
 //   Array.from({ length: 15 }, (_, col) => `${row + 1},${col + 1}`)
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: theme.colors.background,
-    paddingTop: 20
+    paddingTop: 5
   },
   row: {
     flexDirection: 'row',
@@ -209,8 +209,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   panchangView: {
-    height: 170, // Fixed height
-    padding: 12,
+    top: -12,
+    height: 270, // Fixed height
+    padding: 0,
     backgroundColor: '#FFF5E1',
     justifyContent: 'center',
     //alignItems: 'center',

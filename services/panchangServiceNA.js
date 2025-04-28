@@ -3,12 +3,14 @@ import axios from 'axios';
 
 const API_KEY = 'gPWbwU4OVjZN2LPPFkoY2KxLqagXG1A9JYJLyM41'; // Replace as required
 const BASE_URL = 'https://json.freeastrologyapi.com/';
+const SUNRISE_SUNSET = 'getsunriseandset'
+const TITHI = 'tithi-durations'
 
 export const fetchPanchangData = async ({ date, latitude, longitude }) => {
     console.log("Date, lat and long are:", date, latitude, longitude);
   try {
     const response = await axios.post(
-      `${BASE_URL}panchang`,
+      `${BASE_URL}${TITHI}`,
       {
         date, // Format: 'YYYY-MM-DD'
         latitude,
