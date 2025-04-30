@@ -79,6 +79,7 @@ export const fetchPanchang = async (date, latitude, longitude, ayanamsa = 1) => 
     const data = await response.json();
     return data;
   } catch (error) {
+    Alert.alert('Error fetching api data');
     console.error('Panchang API Error:', error.message);
     throw error;
   }

@@ -10,8 +10,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import HomeScreen from "./HomeScreen";
 import HelpScreen from  "./HelpScreen";
-// For adding pnachang
-//import PanchangCard from './PanchangCard';
 
 import InfoCard from  "./InfoCard"
 // import Icon from "react-native-vector-icons/Ionicons"; // You can use MaterialIcons or FontAwesome too
@@ -107,7 +105,7 @@ export default function App() {
           name="Home" 
           // component={HomeScreen} 
           options={({navigation}) => ({
-            title: "Ram Shalaka TInfoCorp®",
+            title: "Ram Shalaka T-InfoCorp®",
             headerTitleStyle: {
               color: '#FF9933'
             },

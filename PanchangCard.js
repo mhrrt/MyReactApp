@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, Alert } from 'react-native';
-import { getCurrentLocation } from './locationHelper';
+import { getCurrentLocation, requestLocationPermission } from './locationHelper';
 
 import { fetchPanchang } from './services/panchangServicePro';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'; // Use icons as needed
@@ -65,6 +65,15 @@ const panchangCard = () => {
   );
 
   const getPanchangData = async () => {
+
+    const hasPermission = await requestLocationPermission();
+
+    if (!hasPermission) {
+      Alert.alert('Permission Denied', 'Cannot fetch location data without permission.');
+      setLoading(false);
+      return;
+    }
+    // Alert.alert('Location permission granted');
     try {
       const { latitude, longitude } = await getCurrentLocation();
       console.log('Device Location:', latitude, longitude);
@@ -113,7 +122,7 @@ const nxtdaysTithi =  panchang.tithi[1]?.name ? `${panchang.tithi[1].name} \n ${
 
       <View style={styles.row}>
         <Card title="Tithi" value={todaysTithi} icon="flare" />
-        <Card title="Nakshatra" value={`${panchang.nakshatra[0]?.name}`} icon="star-david" />
+        <Card title="Nakshatra" value={`${panchang.nakshatra[0]?.name}`} icon=" " />
         <Card title="Sunrise" value={`${extractTime(panchang?.sunrise)} ${extractTime(panchang?.sunset)}`} icon="white-balance-sunny" />
         {/* <Card title="Sunrise" value={`${extractTime(panchang?.moonrise)} - ${extractTime(panchang?.moonset)}`} icon="moon-waning-crescent" /> */}
       </View>
@@ -130,7 +139,7 @@ const nxtdaysTithi =  panchang.tithi[1]?.name ? `${panchang.tithi[1].name} \n ${
 
 const styles = StyleSheet.create({
     container: {
-      padding: 10,
+      padding: 8,
       borderRadius: 12,
       backgroundColor: '#FCEECF',
       borderColor: '#D6A665',
@@ -140,14 +149,14 @@ const styles = StyleSheet.create({
     title: {
       textAlign: 'center',
       fontSize: 11,
-      marginBottom: 8,
+      marginBottom: 5,
       fontWeight: 'bold',
       color: '#713F12',
     },
     row: {
       flexDirection: 'row',
       justifyContent: 'space-around',
-      marginBottom: 10,
+      marginBottom: 8,
     },
     card: {
       backgroundColor: '#FAE8C8',
@@ -164,7 +173,7 @@ const styles = StyleSheet.create({
     },
     iconContainer: {
       marginVertical: 2,
-      height: 25,
+      height: 27,
     },
     cardValue: {
       fontSize: 10,

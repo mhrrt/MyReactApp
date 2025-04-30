@@ -209,8 +209,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   panchangView: {
-    top: -12,
-    height: 270, // Fixed height
+    top: -8,
+    height: 250, // Fixed height
     padding: 0,
     backgroundColor: '#FFF5E1',
     justifyContent: 'center',
