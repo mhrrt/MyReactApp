@@ -12,6 +12,7 @@ import {
 export const requestLocationPermission = async () => {
   let status;
   try {
+    //Alert.alert('Requesting permission within requestLocationPermission');
     if (Platform.OS === 'ios') {
       const isSimulator = Platform.OS === 'ios' && !Platform.isTVOS && !Platform.isPad;
 

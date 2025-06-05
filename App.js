@@ -2,9 +2,7 @@
 // AdMob 5MAr
 import React, { useState, useEffect } from 'react';
 
-import { Text, SafeAreaView, StyleSheet, View } from 'react-native';
-// import { initializeApp } from '@react-native-firebase/app';
-// import { MobileAds } from 'react-native-google-mobile-ads';
+import { Text, SafeAreaView, StyleSheet, View, Alert } from 'react-native';
 // Adding navigation
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
@@ -15,19 +13,15 @@ import InfoCard from  "./InfoCard"
 // import Icon from "react-native-vector-icons/Ionicons"; // You can use MaterialIcons or FontAwesome too
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 // AdMob 5MAR
-// import { View } from 'react-native-reanimated/lib/typescript/Animated';
-// import { GAMBannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 // 11MAr Admob platform specific
 import { Platform } from 'react-native';
 
-
-
-
-// Initialize Firebase & AdMob
-// initializeApp();
-// MobileAds().initialize();
-// AppRegistry.registerComponent(appName, () => App);
-
+import notifee from '@notifee/react-native';
+import { requestUserPermission } from './utils/permissions';
+import { createNotificationChannel } from './utils/notificationChannel';
+import {requestUserPermissionNotify, 
+        createNotificationChannelNotify, 
+        scheduleDailyNotification } from './notifications';
 
 // 11MAR
 let GAMBannerAd, BannerAdSize, TestIds;
@@ -96,6 +90,39 @@ const BannerForiOS = () => {
 };
 
 export default function App() {
+
+  // const [channelId, setChannelId] = useState(null);
+
+  //for getting permission for local notification
+  useEffect(() => {
+  // Alert.alert('useEffect called from App.js #1');
+    // notify lib @notifee
+    async function setup() {
+      const permissionGranted = await requestUserPermissionNotify();
+    
+      if (permissionGranted) {
+        // Alert.alert('Permission granted #3');
+        // const channel = await createNotificationChannelNotify();
+        // setChannelId(channel);
+    
+        try {
+          //Alert.alert('Permission granted #4');
+          await scheduleDailyNotification();
+         //Alert.alert('Daily notification scheduled for 8:2AM #5');
+        } catch (error) {
+          console.error('Failed to schedule daily notification:', error);
+         Alert.alert('Notification Error #10', 'Failed to schedule daily notification',error);
+        }
+      } else {
+       Alert.alert('Notification Warning #11','Permission denied for daily notification!!');
+       console.log('Permission denied for local notifications');
+      }
+    }
+    
+    setup();
+  },[]);
+
+
   return (
     <SafeAreaView style={styles.container}>
     <NavigationContainer>

@@ -1,7 +1,7 @@
 // panchangCard.js
 
 import React, { useState, useEffect } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet, Alert } from 'react-native';
+import { View, Text, Button, ActivityIndicator, StyleSheet, Alert } from 'react-native';
 import { getCurrentLocation, requestLocationPermission } from './locationHelper';
 
 import { fetchPanchang } from './services/panchangServicePro';
@@ -66,24 +66,28 @@ const panchangCard = () => {
 
   const getPanchangData = async () => {
 
+    // Alert.alert('Awating Location Permission');
     const hasPermission = await requestLocationPermission();
 
     if (!hasPermission) {
-      Alert.alert('Permission Denied', 'Cannot fetch location data without permission.');
+      // Alert.alert('Location Permission Denied', 'Cannot fetch location data without permission.');
       setLoading(false);
       return;
     }
-    // Alert.alert('Location permission granted');
+    
     try {
+      // Alert.alert('Location permission granted');
       const { latitude, longitude } = await getCurrentLocation();
       console.log('Device Location:', latitude, longitude);
       console.log('Date format passed to API function:', dateStringWithTimezone);
 
+      //  Alert.alert('Awating api response for panchang...');
       const apiResponse = await fetchPanchang(
        dateStringWithTimezone,
        latitude,
        longitude,
       );
+      //  Alert.alert('panchange api response successfull');
       console.log('Full API Response:', JSON.stringify(apiResponse));
 
       const parsedResponse = typeof apiResponse === 'string'
@@ -95,23 +99,26 @@ const panchangCard = () => {
         setPanchang(parsedResponse.data);
       } else {
         console.warn('⚠️ Output was empty or invalid');
-        Alert.alert('Error', 'Output was empty or invalid');
+        // Alert.alert('Error', 'Output was empty or invalid');
       }
     } catch (err) {
-      console.error('❌ Failed to load Panchang:', err);
-      Alert.alert('Error', 'Something went wrong while fetching Panchang');
+      console.error('❌ Failed to load Panchang:', err.response.data);
     } finally {
       setLoading(false);
     }
   };
     useEffect(() => {
-        getPanchangData();
+      // Alert.alert('useEffect called from PanchangCard');
+       getPanchangData();
     }, []); 
 
 
 if (loading) return <ActivityIndicator size="large" style={{ marginTop: 50 }} />;
 
-if (!panchang) return <Text>Error loading Panchang</Text>;
+if (!panchang) {
+  return <Button title="Try Again" onPress={getPanchangData} />
+  // return <Text>Error loading Panchang</Text>;
+}
 
 const todaysTithi =  panchang.tithi[0]?.name ? `${panchang.tithi[0].name} \n ${extractTime(panchang.tithi[0].start)}  ${extractTime(panchang.tithi[0].end)}` : '-';
 const nxtdaysTithi =  panchang.tithi[1]?.name ? `${panchang.tithi[1].name} \n ${extractTime(panchang.tithi[1].start)}  ${extractTime(panchang.tithi[1].end)}` : '-';
@@ -122,7 +129,7 @@ const nxtdaysTithi =  panchang.tithi[1]?.name ? `${panchang.tithi[1].name} \n ${
 
       <View style={styles.row}>
         <Card title="Tithi" value={todaysTithi} icon="flare" />
-        <Card title="Nakshatra" value={`${panchang.nakshatra[0]?.name}`} icon=" " />
+        <Card title="Nakshatra" value={`${panchang.nakshatra[0]?.name}`} icon="star-david" />
         <Card title="Sunrise" value={`${extractTime(panchang?.sunrise)} ${extractTime(panchang?.sunset)}`} icon="white-balance-sunny" />
         {/* <Card title="Sunrise" value={`${extractTime(panchang?.moonrise)} - ${extractTime(panchang?.moonset)}`} icon="moon-waning-crescent" /> */}
       </View>
@@ -144,7 +151,7 @@ const styles = StyleSheet.create({
       backgroundColor: '#FCEECF',
       borderColor: '#D6A665',
       borderWidth: 1,
-      margin: 5,
+      margin: 4,
     },
     title: {
       textAlign: 'center',
@@ -160,9 +167,9 @@ const styles = StyleSheet.create({
     },
     card: {
       backgroundColor: '#FAE8C8',
-      padding: 5,
+      padding: 3.1,
       borderRadius: 10,
-      width: '32%',
+      width: '31%',
       alignItems: 'center',
       borderWidth: 1,
       borderColor: '#E3C190',
@@ -172,7 +179,7 @@ const styles = StyleSheet.create({
       color: '#713F12',
     },
     iconContainer: {
-      marginVertical: 2,
+      marginVertical: 1,
       height: 27,
     },
     cardValue: {

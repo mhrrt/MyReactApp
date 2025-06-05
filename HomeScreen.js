@@ -2,15 +2,9 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Dimensions, StyleSheet, Modal, Pressable, Alert } from 'react-native';
 import { theme } from './theme';
-// import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
-// import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 
 import RamPrashnavaliAnswer from './RamPrashnavaliAnswer';
 import PanchangCard from './panchangCard';
-
-// const tableData = Array.from({ length: 15 }, (_, row) =>
-//   Array.from({ length: 15 }, (_, col) => `${row + 1},${col + 1}`)
-// );
 
 const { width } = Dimensions.get('window');
 const cellSize = Math.floor(width / 15) - 2;
@@ -54,15 +48,6 @@ const getMessageForCell = (index) => {
 
 const getChopaiIndexForCell = (index) => {
   const messageIndex = index % answerList.length;
-  // console.log(messageIndex);
-  // Alert.alert(
-  //     'Alert Title',
-  //     'My Alert Msg index at homescreen is:'+ messageIndex, // <- this part is optional, you can pass an empty string
-  //     [
-  //       {text: 'OK', onPress: () => console.log('OK Pressed')},
-  //     ],
-  //     {cancelable: false},
-  //   );
   return messageIndex;
 };
 
@@ -171,7 +156,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'transparent',
-    width: Dimensions.get('window') * 0.8
+    width: Dimensions.get('window').width * 0.95
   },
   pressableOverlay: {
     flex: 1,
@@ -180,7 +165,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)'
   },
   modalContent: {
-    padding: 20,
+    padding: 10,
     borderRadius: 10,
     backgroundColor: theme.colors.primary,
     alignItems: 'center',

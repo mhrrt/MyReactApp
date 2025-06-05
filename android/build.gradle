@@ -18,7 +18,15 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
         // classpath("com.google.android.gms:play-services-ads:22.6.0") // Ensure this is updated 10Mar
         // classpath "com.applovin.quality:AppLovinQualityServiceGradlePlugin:+" // Apollvin max 12mar
+
+         //classpath 'com.android.tools.build:gradle:8.0.2' // or whatever version you're using
+        classpath 'com.google.gms:google-services:4.3.15' // make sure this line is here
     }
 }
 
-apply plugin: "com.facebook.react.rootproject"
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
