@@ -58,14 +58,14 @@ export async function scheduleDailyNotification() {
   // date.setMinutes(26);
   // date.setSeconds(0);
 
-  const date = new Date(Date.now() + 10001); 
-    // date.setHours(4);
-    // date.setMinutes(0);
+  const date = new Date(Date.now() + 10000); 
+    date.setHours(4);
+    date.setMinutes(0);
 
-  //If 4AM has already passed today, schedule for tomorrow
-  // if (date.getTime() < Date.now()) {
-  //   date.setDate(date.getDate() + 1);
-  // }
+ // If 4AM has already passed today, schedule for tomorrow
+  if (date.getTime() < Date.now()) {
+    date.setDate(date.getDate() + 1);
+  }
 
 
   //Create timestamp trigger
@@ -99,13 +99,13 @@ export async function scheduleDailyNotification() {
       },
     },
     trigger
-    
+
   );
   const timestamp = date.getTime(); // e.g., 1716355200000
 
   const readableDate = new Date(timestamp).toLocaleString();
   console.log('Scheduled notification with ID:', notificationId, TriggerType.TIMESTAMP.toString(), timestamp.toString());
-  Alert.alert('Notification Scheduled', `ID: ${notificationId} ${TriggerType.TIMESTAMP.toString()} ${readableDate}`);
+  // Alert.alert('Notification Scheduled', `ID: ${notificationId} ${TriggerType.TIMESTAMP.toString()} ${readableDate}`);
 
   notifee.getTriggerNotifications
 
