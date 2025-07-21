@@ -1,16 +1,22 @@
 // HomeScreen.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Dimensions, StyleSheet, Modal, Pressable, Alert } from 'react-native';
 import { theme } from './theme';
 
 import RamPrashnavaliAnswer from './RamPrashnavaliAnswer';
-import PanchangCard from './panchangCard';
+// import PanchangCard from './panchangCard';
 
 const { width } = Dimensions.get('window');
 const cellSize = Math.floor(width / 15) - 2;
 
 const titleText = 'राम शलाका प्रश्नावली गोस्वामी तुलसीदास क्रुत TInfoCorp®';
 const descText ='#1 राम शलाका प्रश्नावली श्रीरामचरितमानस पर आधारित एक भविष्यफल जानने की विधि है।';
+
+const DATA = [
+  { id: '1', title: '#1 Think about your question.' },
+  { id: '2', title: '#2 Select a random grid.' },
+  { id: '3', title: '#3 Read the verse(chaupai) and its iterpretation thats been shown.'},
+];
 
 const tableSize = 15; // 15x15 table
 
@@ -70,14 +76,22 @@ export default function HomeScreen() {
     setModalVisible(true);
   };
 
-   // Replace TestIds.BANNER with your actual Ad Unit ID
-  //  const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-5854957597162003/5424363862';
-
   return (
     <View style={styles.container}>
-      <View style={styles.panchangView}>
+      {/* <View style={styles.panchangView}>
           <PanchangCard />
+        </View> */}
+        <View>
+         <Text style={styles.screenHeader}>Ram Shalaka</Text>
+         </View>
+       <View style={styles.instructionsContainer}>
+              {DATA.map((item) => (
+                  <Text key={item.id} style={styles.instructionText}>
+                    {item.title}
+                  </Text>
+                       ))}
         </View>
+       
       {tableData.map((row, rowIndex) => (
         <View key={rowIndex} style={styles.row}>
           {row.map((cell, colIndex) => {
@@ -193,12 +207,30 @@ const styles = StyleSheet.create({
     color: theme.colors.text,
     fontWeight: 'bold',
   },
-  panchangView: {
-    top: -8,
-    height: 250, // Fixed height
-    padding: 0,
-    backgroundColor: '#FFF5E1',
-    justifyContent: 'center',
-    //alignItems: 'center',
-  }
+  screenHeaderContainer: {
+    marginTop: 10,
+    alignItems: 'center',
+  },
+  screenHeader:{
+    fontWeight: 'bold',
+    color: '#FF9933',
+  },
+  instructionsContainer: {
+  marginTop: 10,
+  marginHorizontal: 20,
+},
+ instructionText: {
+  fontSize: 12,
+  color: '#713F12',
+  marginBottom: 4,
+  textAlign: 'left',
+},
+  // panchangView: {
+  //   top: -8,
+  //   height: 250, // Fixed height
+  //   padding: 0,
+  //   backgroundColor: '#FFF5E1',
+  //   justifyContent: 'center',
+  //   //alignItems: 'center',
+  // }
 });

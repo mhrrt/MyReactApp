@@ -21,12 +21,12 @@ const getCurrentDateTimeISO8601 = () => {
   // Adjust the time to local time by adding the timezone offset
   const offsetSign = timezoneOffset > 0 ? '-' : '+';
   const timezoneString = `${offsetSign}${String(hoursOffset).padStart(2, '0')}:${String(minutesOffset).padStart(2, '0')}`;
-  console.log('iso time before removal of Z is', isoString);
+  // console.log('iso time before removal of Z is', isoString);
 
   // Replace the 'Z' with the local time offset
   isoString = isoString.replace('Z', timezoneString);
 
-  console.log('final datestring is', isoString);
+  // console.log('final datestring is', isoString);
   return isoString;
 };
 
@@ -36,7 +36,12 @@ function extractTime(isoString) {
   const minutes = String(date.getUTCMinutes()).padStart(2, '0');
   const seconds = String(date.getUTCSeconds()).padStart(2, '0');
   //return `${hours}:${minutes}:${seconds}`;
-  return date.toLocaleTimeString();
+  // return date.toLocaleTimeString();
+
+  //return date and time both
+  const time = date.toLocaleTimeString();
+  const fullDate = date.toLocaleDateString();
+  return fullDate + ' ' + time; 
 };
 
 const panchangCard = () => {
@@ -48,17 +53,17 @@ const panchangCard = () => {
   // ISO 8601 (YYYY-MM-DDTHH:MM:SSZ) format.  Example: 2004-02-12T15:19:21+05:30. 
   const now = new Date();
   const isoString = now.toISOString();
-  console.log(isoString);
+  // console.log(isoString);
 
   // Build the final ISO 8601 string with the time zone
   const dateStringWithTimezone = isoString; //getCurrentDateTimeISO8601();
-  console.log(dateStringWithTimezone);
+  // console.log(dateStringWithTimezone);
 
   const Card = ({ title, value, icon }) => (
     <View style={styles.card}>
       <Text style={styles.cardTitle}>{title}</Text>
       <View style={styles.iconContainer}>
-        <MaterialCommunityIcons name={icon} size={28} color="#712D0F" />
+        <MaterialCommunityIcons name={icon} size={28} color="#FF6F00" />
       </View>
       <Text style={styles.cardValue}>{value}</Text>
     </View>
@@ -78,8 +83,8 @@ const panchangCard = () => {
     try {
       // Alert.alert('Location permission granted');
       const { latitude, longitude } = await getCurrentLocation();
-      console.log('Device Location:', latitude, longitude);
-      console.log('Date format passed to API function:', dateStringWithTimezone);
+      // console.log('Device Location:', latitude, longitude);
+      // console.log('Date format passed to API function:', dateStringWithTimezone);
 
       //  Alert.alert('Awating api response for panchang...');
       const apiResponse = await fetchPanchang(
@@ -88,14 +93,14 @@ const panchangCard = () => {
        longitude,
       );
       //  Alert.alert('panchange api response successfull');
-      console.log('Full API Response:', JSON.stringify(apiResponse));
+      // console.log('Full API Response:', JSON.stringify(apiResponse));
 
       const parsedResponse = typeof apiResponse === 'string'
         ? JSON.parse(apiResponse)
         : apiResponse;
 
       if (parsedResponse) {
-        console.log('✅ Panchang parsed successfully:', parsedResponse.data);
+        // console.log('✅ Panchang parsed successfully:', parsedResponse.data);
         setPanchang(parsedResponse.data);
       } else {
         console.warn('⚠️ Output was empty or invalid');
@@ -120,25 +125,36 @@ if (!panchang) {
   // return <Text>Error loading Panchang</Text>;
 }
 
-const todaysTithi =  panchang.tithi[0]?.name ? `${panchang.tithi[0].name} \n ${extractTime(panchang.tithi[0].start)}  ${extractTime(panchang.tithi[0].end)}` : '-';
-const nxtdaysTithi =  panchang.tithi[1]?.name ? `${panchang.tithi[1].name} \n ${extractTime(panchang.tithi[1].start)}  ${extractTime(panchang.tithi[1].end)}` : '-';
+const todaysTithi =  panchang.tithi[0]?.name ? `${panchang.tithi[0].name} \n ${extractTime(panchang.tithi[0].start)} \n-To-\n ${extractTime(panchang.tithi[0].end)}` : '-';
+const nxtdaysTithi =  panchang.tithi[1]?.name ? `${panchang.tithi[1].name} \n ${extractTime(panchang.tithi[1].start)} \n-To-\n ${extractTime(panchang.tithi[1].end)}` : '-';
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Todays Panchang</Text>
 
       <View style={styles.row}>
-        <Card title="Tithi" value={todaysTithi} icon="flare" />
-        <Card title="Nakshatra" value={`${panchang.nakshatra[0]?.name}`} icon="star-david" />
-        <Card title="Sunrise" value={`${extractTime(panchang?.sunrise)} ${extractTime(panchang?.sunset)}`} icon="white-balance-sunny" />
-        {/* <Card title="Sunrise" value={`${extractTime(panchang?.moonrise)} - ${extractTime(panchang?.moonset)}`} icon="moon-waning-crescent" /> */}
+         <Card title="Sunrise" 
+               value={`${extractTime(panchang?.sunrise)}\n\n${extractTime(panchang?.sunset)}`} 
+               icon="white-balance-sunny" />
+
+        <Card title="Tithi" 
+              value={todaysTithi} 
+              icon="flare" />
+
+        <Card title="Nakshatra" 
+              value={`${panchang.nakshatra[0]?.name}\n Lord:${panchang.nakshatra[0]?.lord.vedic_name}\n${extractTime(panchang.nakshatra[0]?.start)}\n${extractTime(panchang.nakshatra[0]?.end)}`} 
+              icon="star-david" />
+
+        <Card title="Moonrise" 
+              value={`${extractTime(panchang?.moonrise)}\n\n${extractTime(panchang?.moonset)}`} 
+              icon="moon-waning-crescent" />
       </View>
 
       <Text style={styles.title}>Next Day Panchang</Text>
 
       <View style={styles.row}>
         <Card title="Tithi" value={nxtdaysTithi} icon="flare" />
-        <Card title="Nakshatra" value={`${panchang.nakshatra[1]?.name}`} icon="star-david" />
+        <Card title="Nakshatra" value={`${panchang.nakshatra[1]?.name}\n Lord:${panchang.nakshatra[1]?.lord.vedic_name}\n${extractTime(panchang.nakshatra[1]?.start)}\n${extractTime(panchang.nakshatra[1]?.end)}`} icon="star-david" />
       </View>
     </View>
   );
@@ -155,28 +171,32 @@ const styles = StyleSheet.create({
     },
     title: {
       textAlign: 'center',
-      fontSize: 11,
+      fontSize: 14,
       marginBottom: 5,
       fontWeight: 'bold',
       color: '#713F12',
     },
     row: {
       flexDirection: 'row',
+      flexWrap: 'wrap', 
       justifyContent: 'space-around',
       marginBottom: 8,
+      alignItems: 'center',
     },
     card: {
       backgroundColor: '#FAE8C8',
+      marginTop: 10,
       padding: 3.1,
       borderRadius: 10,
       width: '31%',
       alignItems: 'center',
       borderWidth: 1,
       borderColor: '#E3C190',
+      height: 110,
     },
     cardTitle: {
       fontWeight: '500',
-      color: '#713F12',
+      color:  '#000000', //'#713F12',
     },
     iconContainer: {
       marginVertical: 1,
@@ -185,8 +205,10 @@ const styles = StyleSheet.create({
     cardValue: {
       fontSize: 10,
       fontWeight: '500',
-      color: '#712D0F',
+      color:  '#000000',//'#712D0F',
+      alignContent: 'center',
       textAlign: 'center',
+      alignItems: 'center',
     },
   });
 

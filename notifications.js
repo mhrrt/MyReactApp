@@ -1,6 +1,28 @@
 import notifee, {AuthorizationStatus, TimestampTrigger, TriggerType, RepeatFrequency, AndroidImportance, AndroidNotificationSetting} from '@notifee/react-native';
 import { Alert } from 'react-native';
 
+
+  const horoscopeAlertTitle = [
+    'Cosmic Clue Awaits',
+    'Your Daily Horoscope',
+    'The Universe is Calling',
+    'Daily Astro Insight'
+  ];
+
+  const horoscopeAlerts = [
+      'A cosmic hint just for you — see today’s horoscope now!',
+      'The universe has a plan for you today—tap to discover it!',
+      'Cosmic whispers hint at something big today. Listen in ✨',
+      'The universe left you a message... it’s in your horoscope 📩✨',
+      'Let the cosmos lead the way today—your guide is waiting 🪐'
+    ];
+
+const getRandomHoroscopeAlert = (items) => {
+  const randomIndex = Math.floor(Math.random() * items.length);
+  console.log('#Notification Desc:', items[randomIndex]);
+  return items[randomIndex];
+};
+
 export async function requestUserPermissionNotify() {
   const settings = await notifee.requestPermission();
 
@@ -101,6 +123,47 @@ export async function scheduleDailyNotification() {
     trigger
 
   );
+
+
+    // ==========================
+    // Second Notification (e.g., 6:00 AM)
+    // ==========================
+    const date2 = new Date(Date.now());
+    date2.setHours(6); // 7 AM
+    date2.setMinutes(30);
+    date2.setSeconds(0);
+
+    if (date2.getTime() < Date.now()) {
+      date2.setDate(date2.getDate() + 1);
+    }
+
+    const trigger2 = {
+      type: TriggerType.TIMESTAMP,
+      timestamp: date2.getTime(),
+      repeatFrequency: RepeatFrequency.DAILY,
+    };
+
+  
+    await notifee.createTriggerNotification(
+      {
+        // 'A cosmic hint just for you — see today’s horoscope now!'
+        title: getRandomHoroscopeAlert(horoscopeAlertTitle), //'Horoscope Hint For You!'
+        body: getRandomHoroscopeAlert(horoscopeAlerts),
+        android: {
+          channelId,
+          smallIcon: 'ic_notification',
+          pressAction: {
+            id: 'HOROSCOPE_TAB',
+            launchActivity: 'default',  // ✅ this is the key
+          },
+        },
+      },
+      trigger2
+    );
+
+    console.log('✅ Scheduled both notifications successfully!');
+
+
   const timestamp = date.getTime(); // e.g., 1716355200000
 
   const readableDate = new Date(timestamp).toLocaleString();
