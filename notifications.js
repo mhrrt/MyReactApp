@@ -97,6 +97,8 @@ export async function scheduleDailyNotification() {
     repeatFrequency: RepeatFrequency.DAILY,
    // alarmManager: true, // ensures wake-up on Android
   };
+  
+  await notifee.cancelAllNotifications(); // clear previous ones
 
   const notificationId = await notifee.createTriggerNotification(
     {

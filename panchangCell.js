@@ -1,6 +1,6 @@
 // panchangCell.js
 
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   Text,
@@ -17,6 +17,7 @@ import {fetchPanchang} from './services/panchangServicePro';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'; // Use icons as needed
 import {theme} from './theme';
 import CustomAvatarIcon from './customAvatarIcon';
+import {reverseGeocode} from './utils/reverseGeocode';
 
 const getCurrentDateTimeISO8601 = () => {
   const today = new Date();
@@ -80,8 +81,11 @@ function extractDateTime(isoString) {
 }
 
 const PanchangCell = () => {
+  const [coords, setCoords] = useState(null); // will make use of this for reverse geoCoding
   const [panchang, setPanchang] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [address, setAddress] = useState(null); //initially location address is null
+  const hasFetchedAddress = useRef(false);
 
   const [todaysDate, setTodaysDate] = useState(extractDate());
 
@@ -102,6 +106,7 @@ const PanchangCell = () => {
 
     if (!hasPermission) {
       // Alert.alert('Location Permission Denied', 'Cannot fetch location data without permission.');
+      console.log('#Location: Within panchangCell loation is denied');
       setLoading(false);
       return;
     }
@@ -109,20 +114,20 @@ const PanchangCell = () => {
     try {
       // Alert.alert('Location permission granted');
       const {latitude, longitude} = await getCurrentLocation();
-      // console.log('Device Location:', latitude, longitude);
-      // console.log(
-      //   'Date format passed to API function:',
-      //   dateStringWithTimezone,
-      // );
+      setCoords({latitude, longitude}); // saving cordinates to make use of it later on
 
       //  Alert.alert('Awating api response for panchang...');
+      console.log(
+        '#Panchnag: Awating api response for panchang with Lat, long:',
+        {latitude, longitude},
+      );
       const apiResponse = await fetchPanchang(
         dateStringWithTimezone,
         latitude,
         longitude,
       );
       //  Alert.alert('panchange api response successfull');
-      // console.log('Full API Response:', JSON.stringify(apiResponse));
+      console.log('Full API Response:', JSON.stringify(apiResponse));
 
       const parsedResponse =
         typeof apiResponse === 'string' ? JSON.parse(apiResponse) : apiResponse;
@@ -144,6 +149,28 @@ const PanchangCell = () => {
     // Alert.alert('useEffect called from panchangCell');
     getPanchangData();
   }, []);
+
+  useEffect(() => {
+    console.log('#ReverseGeoCode: Withing useeffect with coords', coords);
+    if (!coords || hasFetchedAddress.current) return; // avoid multipal calls
+
+    const fetchAddress = async () => {
+      const addr = await reverseGeocode(coords.latitude, coords.longitude);
+      console.log('#ReverseGeoCode: response: \n', JSON.stringify(addr, null, 2));
+      // setTimeout(() => {
+      //   Alert.alert(
+      //     'ReverseGeoCode Response',
+      //     `Lat: ${coords.latitude}, Lon: ${coords.longitude}\n${JSON.stringify(addr, null, 2)}`,
+      //   );
+      // }, 500);
+
+      setAddress(addr);
+      setLoading(false);
+      hasFetchedAddress.current = true;
+    };
+
+    fetchAddress();
+  }, [coords]); // runs only when coords is set
 
   if (loading)
     return <ActivityIndicator size="large" style={{marginTop: 50}} />;
@@ -171,9 +198,21 @@ const PanchangCell = () => {
   const nxtdayNakshtraStart = extractDateTime(panchang.nakshatra[1].start);
   const nxtdayNakshtraEnd = extractDateTime(panchang.nakshatra[1].end);
 
+  const localAddress =  (address?.address?.city && address?.address?.country) ?
+  (address?.address?.city + ' ' + address?.address?.country) : 
+  ((address?.address?.county && address?.address?.country) ? 
+  (address?.address?.county + ' ' + address?.address?.country) : 
+  (address?.address?.state_district + ' ' + address?.address?.country)); 
+  
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.heading}>{todaysHeader}</Text>
+      <Text style={styles.heading}>
+        {loading
+          ? 'Fetching address...'
+          : (localAddress ? localAddress : 'City: N/A')}
+      </Text>
 
       <Card.Title
         style={styles.card}
@@ -184,7 +223,9 @@ const PanchangCell = () => {
         // subtitle={`Sunset: ${extractTime(panchang?.sunrise)}`}
         titleStyle={styles.titleText}
         subtitleStyle={styles.subtitleText}
-        left={props => <CustomAvatarIcon {...props} icon="white-balance-sunny" />}
+        left={props => (
+          <CustomAvatarIcon {...props} icon="white-balance-sunny" />
+        )}
       />
 
       <Card.Title
@@ -201,7 +242,9 @@ const PanchangCell = () => {
         style={styles.card}
         title={`Nakshatra: ${panchang.nakshatra[0]?.name} - Lord: ${panchang.nakshatra[0]?.lord.vedic_name}`}
         titleNumberOfLines={1}
-        subtitle={'Start: ' + todayNakshtraStart + '\nEnds: ' + todayNakshtraEnd}
+        subtitle={
+          'Start: ' + todayNakshtraStart + '\nEnds: ' + todayNakshtraEnd
+        }
         subtitleNumberOfLines={2}
         titleStyle={styles.titleText}
         subtitleStyle={styles.subtitleText}
@@ -250,7 +293,7 @@ const PanchangCell = () => {
         )}
       />
 
-     {/* Next day Panchang goes here */}
+      {/* Next day Panchang goes here */}
       <Text style={styles.headingNxtday}>{nxtdayHeader}</Text>
 
       <Card.Title
@@ -267,7 +310,9 @@ const PanchangCell = () => {
         style={styles.card}
         title={`Nakshatra: ${panchang.nakshatra[1]?.name} - Lord: ${panchang.nakshatra[1]?.lord.vedic_name}`}
         titleNumberOfLines={1}
-        subtitle={'Start: ' + nxtdayNakshtraStart + '\nEnds: ' + nxtdayNakshtraEnd}
+        subtitle={
+          'Start: ' + nxtdayNakshtraStart + '\nEnds: ' + nxtdayNakshtraEnd
+        }
         subtitleNumberOfLines={2}
         titleStyle={styles.titleText}
         subtitleStyle={styles.subtitleText}
@@ -301,7 +346,6 @@ const PanchangCell = () => {
           <CustomAvatarIcon {...props} icon="moon-waning-gibbous" />
         )}
       />
-
     </ScrollView>
   );
 };

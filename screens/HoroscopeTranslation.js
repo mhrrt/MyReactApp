@@ -11,6 +11,7 @@ import {
 
 import TranslationService, { languageOptions } from '../utils/TranslationService';
 import {Picker} from '@react-native-picker/picker';
+import { useColorScheme } from 'react-native';
 
 const HoroscopeTranslation = forwardRef(({ originalText}, ref) => {
 
@@ -20,6 +21,9 @@ const HoroscopeTranslation = forwardRef(({ originalText}, ref) => {
     // State to handle loading indicator
     const [loading, setLoading] = useState(false);
     
+  const scheme = useColorScheme(); // returns 'light' or 'dark'
+  const textStyles = getStyles(scheme); // generate themed styles
+  console.log('schem and text are::', scheme, textStyles);
 
   const onLangChange = async (lang) => {
     setSelectedLang(lang);
@@ -58,12 +62,23 @@ const HoroscopeTranslation = forwardRef(({ originalText}, ref) => {
                {loading ? (
                         <ActivityIndicator size="large" color="#f57c00"></ActivityIndicator>
                         ) :
-                        <Text style={styles.horoscopeText}>{translatedText || originalText}</Text>
+                        <Text style={textStyles.horoscopeTextByTheme}>{translatedText || originalText}</Text>
                     }
             </View> 
     </View>
   );
 });
+
+const getStyles = (scheme) =>
+  StyleSheet.create({
+    horoscopeTextByTheme: {
+      fontSize: 14,
+      color: scheme === 'dark' ? '#FFFFFF' : '#4a0505a0',
+      // add other shared styles here
+    textAlign: 'justify',
+    margin: 5,
+    },
+  });
 
 export default HoroscopeTranslation;
 
@@ -78,6 +93,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginBottom: 16,
     textAlign: 'justify',
+    color: '#000000',
   },
   picker: {
     height: 60,

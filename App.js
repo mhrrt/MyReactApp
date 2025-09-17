@@ -34,8 +34,6 @@ import { navigationRef } from './RootNavigation'; // adjust path as needed
 import { registerBackgroundHandler, setupForegroundNotificationHandler } from './NotificationHandler';
 
 
-
-
 // 11MAR
 let GAMBannerAd, BannerAdSize, TestIds;
 
@@ -123,55 +121,60 @@ export default function App() {
   // dynamically setting default Active Tab
   const [initialTab, setInitialTab] = useState('Panchang');
 
-  //for getting permission for local notification
+
   useEffect(() => {
-    // Alert.alert('useEffect called from App.js #1');
-    // notify lib @notifee
-    async function setup() {
-      const permissionGranted = await requestUserPermissionNotify();
-
-      if (permissionGranted) {
-        // Alert.alert('Permission granted #3');
-        // const channel = await createNotificationChannelNotify();
-        // setChannelId(channel);
-
-        try {
-          //Alert.alert('Permission granted #4');
-          await scheduleDailyNotification();
-          //Alert.alert('Daily notification scheduled for 8:2AM #5');
-        } catch (error) {
-          console.error('Failed to schedule daily notification:', error);
-          Alert.alert(
-            'Notification Error #10',
-            'Failed to schedule daily notification',
-            error,
-          );
-        }
-      } else {
-        Alert.alert(
-          'Notification Warning #11',
-          'Permission denied for daily notification!!',
-        );
-        console.log('Permission denied for local notifications');
+  const getPermissionAndLocation = async () => {
+    const hasPermission = await requestLocationPermission();
+    if (hasPermission === PermissionsAndroid.RESULTS.GRANTED) {
+      try {
+        const coords = await getCurrentLocation();
+        console.log('📍 Final Location:', coords);
+      } catch(error) {
+         Alert.alert('Unable to get device location, you can grant location permission from Settings--> Apps--> Ram Shalaka'); 
       }
+    } else {
+      console.warn('📵 Location permission not granted');
+      Alert.alert('Unable to get location permission, you can grant location permission from Settings--> Apps--> Ram Shalaka'); 
     }
+  };
 
-    setup();
-  }, []);
+  getPermissionAndLocation();
+}, []);
 
-  // // for setting initial tab when user tap on notification banner
+  // //for getting permission for local notification
   // useEffect(() => {
-  //   console.log('#2 Withing app.js and about to execute checkNotificationNav');
-  //   const checkNotificationNav = async () => {
-  //     const targetTab = await AsyncStorage.getItem('navigateToTab');
-  //     if (targetTab) {
-  //       console.log('🔁 Launching with initial tab:', targetTab);
-  //       setInitialTab(targetTab);
-  //       await AsyncStorage.removeItem('navigateToTab');
-  //     }
-  //   };
+  //   // Alert.alert('useEffect called from App.js #1');
+  //   // notify lib @notifee
+  //   async function setup() {
+  //     const permissionGranted = await requestUserPermissionNotify();
 
-  //   checkNotificationNav();
+  //     if (permissionGranted) {
+  //       // Alert.alert('Permission granted #3');
+  //       // const channel = await createNotificationChannelNotify();
+  //       // setChannelId(channel);
+
+  //       try {
+  //         //Alert.alert('Permission granted #4');
+  //         await scheduleDailyNotification();
+  //         //Alert.alert('Daily notification scheduled for 8:2AM #5');
+  //       } catch (error) {
+  //         console.error('Failed to schedule daily notification:', error);
+  //         Alert.alert(
+  //           'Notification Error #10',
+  //           'Failed to schedule daily notification',
+  //           error,
+  //         );
+  //       }
+  //     } else {
+  //       Alert.alert(
+  //         'Notification Warning #11',
+  //         'Permission denied for daily notification!!',
+  //       );
+  //       console.log('Permission denied for local notifications');
+  //     }
+  //   }
+
+  //   setup();
   // }, []);
 
     useEffect(() => {

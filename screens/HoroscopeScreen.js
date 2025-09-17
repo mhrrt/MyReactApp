@@ -1,4 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
+import { useColorScheme } from 'react-native';
 import {
   View,
   Text,
@@ -31,6 +32,14 @@ import HoroscopeTranslation from './HoroscopeTranslation';
 import { theme } from '../theme';
 // import { useNavigation } from '@react-navigation/native';
 import ShareMe from '../utils/shareMe';
+import {
+  requestUserPermissionNotify,
+  createNotificationChannelNotify,
+  scheduleDailyNotification,
+} from '../notifications';
+
+
+
 
 const zodiacSigns = [
   {name: 'Aries', icon: AriesIcon},
@@ -46,6 +55,7 @@ const zodiacSigns = [
   {name: 'Aquarius', icon: AquIcon},
   {name: 'Pisces', icon: PiscesIcon},
 ];
+
 
 const horoscopeDailyUrl =
   'https://horoscope-app-api.vercel.app/api/v1/get-horoscope/daily';
@@ -92,6 +102,9 @@ const HoroscopeScreen = () => {
 
   const [selectedLang, setSelectedLang] = useState('');
   const [translatedText, setTranslatedText] = useState('');
+
+  const scheme = useColorScheme(); // returns 'light' or 'dark'
+  const textStyles = getStyles(scheme); // generate themed styles
 
   const updateHoroscope = (text) => {
     setHoroscope(text);
@@ -168,6 +181,42 @@ const HoroscopeScreen = () => {
     fetchHoroscope(sign, activeTab); // activeTab do have value of current active tab
   };
 
+  //for getting permission for local notification
+  useEffect(() => {
+    // Alert.alert('useEffect called from App.js #1');
+    // notify lib @notifee
+    async function setup() {
+      const permissionGranted = await requestUserPermissionNotify();
+
+      if (permissionGranted) {
+        // Alert.alert('Permission granted #3');
+        // const channel = await createNotificationChannelNotify();
+        // setChannelId(channel);
+
+        try {
+          //Alert.alert('Permission granted #4');
+          await scheduleDailyNotification();
+          //Alert.alert('Daily notification scheduled for 8:2AM #5');
+        } catch (error) {
+          console.error('Failed to schedule daily notification:', error);
+          Alert.alert(
+            'Notification Error #10',
+            'Failed to schedule daily notification',
+            error,
+          );
+        }
+      } else {
+        Alert.alert(
+          'Notification Warning #11',
+          'Permission denied for daily notification!!',
+        );
+        console.log('Permission denied for local notifications');
+      }
+    }
+
+    setup();
+  }, []);
+
   return (
     <View style={styles.topContainer} ref={viewRef}> 
      <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -224,7 +273,7 @@ const HoroscopeScreen = () => {
       {/* Horoscope response will go here */}
       <View style={styles.horoscopeContainer}>
         {loading ? (
-          <ActivityIndicator size="large" color="#f57c00"></ActivityIndicator>
+          <ActivityIndicator size="large" color="#f57c00" />
         ) : (
           <Text style={styles.horoscopeText}>{horoscopeText}</Text>
         )}
@@ -254,6 +303,16 @@ const HoroscopeScreen = () => {
   );
 };
 
+const getStyles = (scheme) =>
+  StyleSheet.create({
+    horoscopeTextByTheme: {
+      fontSize: 14,
+      color: scheme === 'dark' ? '#FFFFFF' : '#000000',
+      // add other shared styles here
+    textAlign: 'justify',
+    },
+  });
+
 // Styles
 const styles = StyleSheet.create({
   topContainer: {
@@ -267,26 +326,36 @@ const styles = StyleSheet.create({
   },
   container: {
     // flex: 1,
-    padding: 5,
+    padding: 10,
     backgroundColor: theme.colors.background,
   },
   signGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    marginVertical: 2,
-  },
-  signItem: {
-    width: '19%',
-    margin: 4,
-    paddingVertical: 1,
-    borderRadius: 8,
-    borderColor: '#FF9800', //orange
-    backgroundColor: theme.colors.background,    //'#f0f0f0',
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: '#FF9800',
-  },
+  flexDirection: 'row',
+  flexWrap: 'wrap',
+  justifyContent: 'space-between',
+  marginVertical: 8,
+},
+signItem: {
+  flexBasis: '24%',  // 4 per row
+  marginVertical: 2,
+  alignItems: 'center',
+  borderWidth: 2,
+  borderColor: '#FF9800',
+  borderRadius: 8,
+  backgroundColor: theme.colors.background,
+  paddingVertical: 8,
+
+},
+icon: {
+  width: 40,
+  height: 40,
+  marginBottom: 4,
+},
+label: {
+  fontSize: 12,
+  color: '#333',
+  textAlign: 'center',
+},
   activeSignItem: {
     backgroundColor: '#ffdd00', // highlighted background (orange)
   },
@@ -294,21 +363,12 @@ const styles = StyleSheet.create({
     color: '#000',
     fontWeight: '500',
   },
-  icon: {
-    width: 50,
-    height: 50,
-    marginBottom: 0,
-  },
+
   activeSignText: {
     color: '#fff',
     fontWeight: 'bold',
   },
-  label: {
-    marginTop: 0,
-    fontSize: 12,
-    color: '#333',
-    textAlign: 'center',
-  },
+  
   tabContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -340,6 +400,8 @@ const styles = StyleSheet.create({
   horoscopeText: {
     fontSize: 14,
     textAlign: 'justify',
+     color: '#4a0505a0',
+     margin: 5,
   },
   translationWrapper: {
     marginTop: 20,

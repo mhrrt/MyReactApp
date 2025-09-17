@@ -7,7 +7,7 @@ const modalHeight = screenHeight * 0.8; // 80% of screen height
 
 const chopai1 = {
   title: "Ram Prashnavali Answer #1 Chaupai from BalKand",
-  resultHindi: "उत्तर प्रश्न बहुत उत्तम है। कार्य सिद्ध होगा।",
+  resultHindi: "उत्तर: प्रश्न बहुत उत्तम है। कार्य सिद्ध होगा।",
   chopaiHindi:"चौपाई: सुनु सिय सत्य असीस हमारी। पूजिहि मन कामना तुम्हारी॥",
   interpritionHindi: " हे सीता! हमारी सच्ची आसीस सुनो, तुम्हारी मनःकामना पूरी होगी। नारद का वचन सदा पवित्र (संशय, भ्रम आदि दोषों से रहित) और सत्य है। जिसमें तुम्हारा मन अनुरक्त हो गया है, वही वर तुमको मिलेगा।",
   resultEngligh:"Answer: The question of the questioner is good; the work will be successful.",
@@ -20,9 +20,9 @@ const chopai2 = {
   resultHindi: "उत्तर: भगवान श्री राम का स्मरण करते हुए अपना काम शुरू करें, सफलता मिलेगी।",
   chopaiHindi:"चौपाई: प्रबिसि नगर कीजे सब काजा। हृदयँ राखि कौसलपुर राजा॥",
   interpritionHindi: "  अयोध्यापुरी के राजा श्री रघुनाथजी को हृदय में रखे हुए नगर में प्रवेश करके सब काम कीजिए। उसके लिए विष अमृत हो जाता है, शत्रु मित्रता करने लगते हैं, समुद्र गाय के खुर के बराबर हो जाता है, अग्नि में शीतलता आ जाती है।",
-  resultEngligh:"Chaupai: Prabisi Nagar Kije Sab Kaaja. Keeping his heart the king of Kausalya.",
-  chopaiEng:"Chaupai: Sunu Siy Saty Asees Hamaaree, Poojihi Man Kaamana Tumhaaree.",
-  interpritionEng:"Do all the work after entering the city, keeping the king of Ayodhyapuri Shri Raghunathji in your heart. For him, poison becomes nectar, enemies become friends, the ocean becomes equal to a cow’s hoof, and fire becomes cool.॥1॥"
+  resultEngligh:"Answer: Start your work remembering Lord Shri Ram, you will get success.",
+  chopaiEng:"Chaupai: Prabisi Nagar Kije Sab Kaaja. Keeping his heart the king of Kausalya.",
+  interpritionEng:"Do all the work after entering the city, keeping the king of Ayodhyapuri Shri Raghunathji in your heart. For him, poison becomes nectar, enemies become friends, the ocean becomes equal to a cow’s hoof, and fire becomes cool.॥2॥"
 }
 
 const chopai3 = {
@@ -79,7 +79,7 @@ const chopai8 = {
   resultHindi: "उत्तर : कार्य पूर्ण होने में संदेह है।",
   chopaiHindi:"चौपाई: बरुन कुबेर सुरेस समीरा। रन सन्मुख धरि काहूँ न धीरा॥",
   interpritionHindi: " वरुण, कुबेर, इंद्र और वायु, इनमें से किसी ने भी रण में तुम्हारे सामने धैर्य धारण नहीं किया (अर्थात सामना न कर सके )।।",
-  resultEngligh:"Answer: There is doubt in sucess of the work.",
+  resultEngligh:"Answer: There is doubt in success of the work.",
   chopaiEng:"Chaupai: Barun kuber sures sameera. ran sanmukh dhari kaahoon na dheera॥",
   interpritionEng:"Varun, Kuber, Indra and Vayu, none of them could withstand you in battle.॥8॥"
 }

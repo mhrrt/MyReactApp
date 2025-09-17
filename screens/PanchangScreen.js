@@ -18,6 +18,7 @@ import ShareMe from '../utils/shareMe';
 import {Button} from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'; // Use icons as needed
 
+
 const {width} = Dimensions.get('window');
 const cellSize = Math.floor(width / 15) - 2;
 
@@ -80,8 +81,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  shareIcon: {
-    marginRight: 8, // 👈 Space between icon and text
+   shareIcon: {
+    // marginRight: 8, // 👈 Space between icon and text
+    alignSelf: 'center',
+    alignItems: 'center',
   },
   roundIconButton: {
     backgroundColor: '#FF9800',  // or any color you prefer

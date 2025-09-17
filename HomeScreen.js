@@ -15,7 +15,7 @@ const descText ='#1 राम शलाका प्रश्नावली श
 const DATA = [
   { id: '1', title: '#1 Think about your question.' },
   { id: '2', title: '#2 Select a random grid.' },
-  { id: '3', title: '#3 Read the verse(chaupai) and its iterpretation thats been shown.'},
+  { id: '3', title: '#3 Read the verse(chaupai) and its interpritation that\'s been shown.'},
 ];
 
 const tableSize = 15; // 15x15 table

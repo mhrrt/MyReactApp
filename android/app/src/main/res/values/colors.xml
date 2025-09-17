@@ -1,4 +1,9 @@
 
 <resources>
 <color name="splash_background">#E5E1BC</color>  <!-- Example: saferon color App Theme -->
+<!-- colors.xml -->
+<color name="text_primary_light">#000000</color> <!-- black for light mode -->
+<color name="text_primary_dark">#FFFFFF</color> <!-- white for dark mode -->
+ <color name="black">#000000</color> <!-- black for light mode -->
+ <color name="white">#FFFFFF</color> <!-- white for dark mode -->
 </resources>
