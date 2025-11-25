@@ -17,9 +17,28 @@ import { Alert } from 'react-native';
       'Let the cosmos lead the way today—your guide is waiting 🪐'
     ];
 
+    // for panchang and cahoghadiya
+    const appAlertTitle = [
+    'Cosmic Clue Awaits',
+    'Today’s Tithi',
+    'The Universe is Calling',
+    'Tap For Astro Insight',
+  ];
+
+  const appAlerts = [
+      'Begin your day the Vedic way — see what the stars say in today’s Panchang!',
+      'Find the best time for prayer, meditation, or new beginnings — open your Panchang!',
+      'See why the day is special in your Panchang app. ✨',
+      'The stars hold guidance for you today — view your personalized Panchang insights.📩✨',
+      'What does today’s Graha position say 🪐.'
+    ];
+
+    let randomIndexToFetch = 0;
+
 const getRandomHoroscopeAlert = (items) => {
   const randomIndex = Math.floor(Math.random() * items.length);
   console.log('#Notification Desc:', items[randomIndex]);
+  randomIndexToFetch = randomIndex;
   return items[randomIndex];
 };
 
@@ -102,8 +121,8 @@ export async function scheduleDailyNotification() {
 
   const notificationId = await notifee.createTriggerNotification(
     {
-      title: 'Good morning!, Get Todays Panchang',
-      body: 'Check today’s Panchang details in the app!',
+      title: getRandomHoroscopeAlert(appAlertTitle), //'Good morning!, Get Todays Panchang',
+      body:  appAlerts[randomIndexToFetch], //'Check today’s Panchang details in the app!',
       android: {
          channelId, // ensure this exists
          smallIcon: 'ic_notification', // optional, defaults to 'ic_launcher'.

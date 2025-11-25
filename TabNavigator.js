@@ -8,6 +8,8 @@ import notifee, {EventType} from '@notifee/react-native';
 import HomeScreen from './HomeScreen';
 import HoroscopeScreen from './screens/HoroscopeScreen';
 import PanchangScreen from './screens/PanchangScreen';
+// import ChoghadiyaTable from './screens/ChaughadiyaTable';
+import ChaoghadiyaSegment from './screens/ChaoghadiyaSegment';
 import { theme } from './theme';
 import NotificationHandler from './NotificationHandler';
 
@@ -39,8 +41,8 @@ const Tab = createBottomTabNavigator();
         }}
       />
 
-      <Tab.Screen 
-        name='Panchang'
+      <Tab.Screen
+        name="Panchang"
         component={PanchangScreen}
         options={{
           tabBarIcon: ({color, size}) => (
@@ -57,9 +59,19 @@ const Tab = createBottomTabNavigator();
           ),
         }}
       />
+       <Tab.Screen
+        name="Chaughadiya"
+        component={ChaoghadiyaSegment}
+        options={{
+          tabBarIcon: ({color, size}) => (
+            <MaterialIcons name="access-time" color={color} size={size} />
+          ),
+        }}
+      />
+
     </Tab.Navigator>
   );
-};
+}
 
 // Exporting the TabNavigator component as default so it can be used elsewhere (e.g., in your main app navigation)
 // export default TabNavigator;
